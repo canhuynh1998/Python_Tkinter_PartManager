@@ -22,35 +22,47 @@ def add_item():
     db.insert(part_text.get(), customer.get(), retailer.get(), price.get()) #this is inserting into the DB
     part_list.delete(0, END)
     part_list.insert(END, (part_text.get(), customer.get(), retailer.get(), price.get()))
+    clear_item()
     populate_list()
 
 def select_item(event):
-    global selected_item 
-    index = part_list.curselection()[0]
-    selected_item = part_list.get(index)
-    print(selected_item)
-
-    part_entry.delete(0, END)
-    part_entry.insert(END, selected_item[1])
-    customer_entry.delete(0, END)
-    customer_entry.insert(END, selected_item[2])
-    retailer_entry.delete(0, END)
-    retailer_entry.insert(END, selected_item[3])
-    price_entry.delete(0, END)
-    price_entry.insert(END, selected_item[4])
+    try:
+        global selected_item 
+        index = part_list.curselection()[0]
+        selected_item = part_list.get(index)
+        print(selected_item)
+        
+        part_entry.delete(0, END)
+        part_entry.insert(END, selected_item[1])
+        customer_entry.delete(0, END)
+        customer_entry.insert(END, selected_item[2])
+        retailer_entry.delete(0, END)
+        retailer_entry.insert(END, selected_item[3])
+        price_entry.delete(0, END)
+        price_entry.insert(END, selected_item[4])
+    except IndexError:
+        pass
 
 
 def remove_item():
     print('Remove')
     db.remove(selected_item[0])
+    #clear_item()
     populate_list()
-    
+
 def update_item():
     print('Updated')
+    db.update(selected_item[0],part_text.get(), customer.get(), retailer.get(), price.get())
+
+    populate_list()
 
 def clear_item():
     print('Cleared')
-
+    part_entry.delete(0, END)
+    customer_entry.delete(0, END)
+    retailer_entry.delete(0, END)
+    price_entry.delete(0, END)
+   
 
 
 
